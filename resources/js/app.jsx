@@ -1,10 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import './bootstrap';
 
 // Crear el punto de entrada de React
-if (document.getElementById('app')) {
-    const root = ReactDOM.createRoot(document.getElementById('app'));
-    root.render(<App />);
+const rootElement = document.getElementById('app');
+if (rootElement) {
+    const root = createRoot(rootElement);
+    root.render(
+        <StrictMode>
+            <App />
+        </StrictMode>
+    );
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UcscDataForm = ({ onDataSubmitted }) => {
+function UcscDataForm({ onDataSubmitted }) {
     const [formData, setFormData] = useState({
         rut_alumno: '',
         rut_profesor: '',
@@ -19,7 +19,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
             [name]: value
         }));
         
-        // Limpiar errores cuando el usuario modifica el campo
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -35,7 +34,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
         setErrors({});
 
         try {
-            // Preparar datos para envío
             const dataToSend = {
                 rut_alumno: parseInt(formData.rut_alumno),
                 rut_profesor: parseInt(formData.rut_profesor),
@@ -51,7 +49,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     text: 'Datos cargados exitosamente desde sistemas UCSC'
                 });
                 
-                // Limpiar formulario
                 setFormData({
                     rut_alumno: '',
                     rut_profesor: '',
@@ -59,7 +56,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     nota_final: ''
                 });
 
-                // Notificar al componente padre
                 if (onDataSubmitted) {
                     onDataSubmitted();
                 }
@@ -85,7 +81,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
             </h2>
             
             <form onSubmit={handleSubmit} className="space-y-4">
-                {/* RUT Alumno - R1.1 */}
                 <div>
                     <label htmlFor="rut_alumno" className="block text-sm font-medium text-gray-700">
                         RUT Alumno <span className="text-red-500">*</span>
@@ -112,7 +107,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     )}
                 </div>
 
-                {/* RUT Profesor - R1.4 */}
                 <div>
                     <label htmlFor="rut_profesor" className="block text-sm font-medium text-gray-700">
                         RUT Profesor <span className="text-red-500">*</span>
@@ -139,7 +133,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     )}
                 </div>
 
-                {/* Fecha Ingreso - R1.8 */}
                 <div>
                     <label htmlFor="fecha_ingreso" className="block text-sm font-medium text-gray-700">
                         Fecha de Ingreso <span className="text-red-500">*</span>
@@ -165,7 +158,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     )}
                 </div>
 
-                {/* Nota Final - R1.9 */}
                 <div>
                     <label htmlFor="nota_final" className="block text-sm font-medium text-gray-700">
                         Nota Final <span className="text-gray-400">(Opcional)</span>
@@ -192,7 +184,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     )}
                 </div>
 
-                {/* Mensaje de estado */}
                 {message && (
                     <div className={`p-4 rounded-md ${
                         message.type === 'success' 
@@ -203,7 +194,6 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                     </div>
                 )}
 
-                {/* Botón de envío */}
                 <div>
                     <button
                         type="submit"
@@ -225,18 +215,17 @@ const UcscDataForm = ({ onDataSubmitted }) => {
                 </div>
             </form>
 
-            {/* Información adicional */}
             <div className="mt-6 p-4 bg-blue-50 rounded-md">
                 <h3 className="text-sm font-medium text-blue-800">Información del proceso:</h3>
                 <ul className="mt-2 text-sm text-blue-700 space-y-1">
-                    <li>• R1.11: Los datos del alumno y profesor se obtienen automáticamente desde el sistema UCSC</li>
-                    <li>• R1.12: El sistema verifica y actualiza la información automáticamente</li>
-                    <li>• R1.13: Se registra un log de la operación con todos los datos</li>
-                    <li>• R1.15: El proceso también se ejecuta automáticamente cada minuto</li>
+                    <li> R1.11: Los datos del alumno y profesor se obtienen automáticamente desde el sistema UCSC</li>
+                    <li> R1.12: El sistema verifica y actualiza la información automáticamente</li>
+                    <li> R1.13: Se registra un log de la operación con todos los datos</li>
+                    <li> R1.15: El proceso también se ejecuta automáticamente cada minuto</li>
                 </ul>
             </div>
         </div>
     );
-};
+}
 
 export default UcscDataForm;

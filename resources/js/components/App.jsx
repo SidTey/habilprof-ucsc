@@ -4,7 +4,7 @@ import UcscDataTable from './UcscDataTable';
 import UcscLogs from './UcscLogs';
 import axios from 'axios';
 
-const App = () => {
+function App() {
     const [activeTab, setActiveTab] = useState('form');
     const [registros, setRegistros] = useState([]);
     const [logs, setLogs] = useState([]);
@@ -139,6 +139,6 @@ const App = () => {
             </footer>
         </div>
     );
-};
+}
 
 export default App;

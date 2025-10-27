@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UcscLogs = ({ logs, loading, onRefresh }) => {
+function UcscLogs({ logs, loading, onRefresh }) {
     const getStatusBadge = (estado) => {
         if (estado === 'exitoso') {
             return (
@@ -125,6 +125,6 @@ const UcscLogs = ({ logs, loading, onRefresh }) => {
             </div>
         </div>
     );
-};
+}
 
 export default UcscLogs;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UcscDataTable = ({ registros, loading, onRefresh }) => {
+function UcscDataTable({ registros, loading, onRefresh }) {
     return (
         <div>
             <div className="flex justify-between items-center mb-4">
@@ -98,6 +98,6 @@ const UcscDataTable = ({ registros, loading, onRefresh }) => {
             </div>
         </div>
     );
-};
+}
 
 export default UcscDataTable;
