@@ -1,0 +1,122 @@
+name: 🐛 Reporte de Bug
+description: Reporta un problema o error en el sistema HabilProf
+title: "[BUG]: "
+labels: ["bug", "necesita-revisión"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tomarte el tiempo de reportar este bug. Por favor completa la información a continuación.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del problema
+      description: Describe claramente el problema que encontraste
+      placeholder: Explica qué está fallando
+    validations:
+      required: true
+
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducir
+      description: Enumera los pasos para reproducir el problema
+      placeholder: |
+        1. Ir a '...'
+        2. Hacer clic en '...'
+        3. Ver error
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamiento-esperado
+    attributes:
+      label: Comportamiento esperado
+      description: ¿Qué esperabas que sucediera?
+      placeholder: Describe lo que debería ocurrir
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamiento-actual
+    attributes:
+      label: Comportamiento actual
+      description: ¿Qué está sucediendo en su lugar?
+      placeholder: Describe lo que está ocurriendo
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área afectada
+      description: ¿Qué parte del sistema está afectada?
+      options:
+        - Frontend (React)
+        - Backend (Laravel)
+        - Base de datos
+        - API
+        - Comandos Artisan
+        - Carga automática de datos
+        - Validaciones
+        - Logs
+        - Otro
+    validations:
+      required: true
+
+  - type: input
+    id: version-php
+    attributes:
+      label: Versión de PHP
+      placeholder: "8.2.29"
+    validations:
+      required: false
+
+  - type: input
+    id: version-node
+    attributes:
+      label: Versión de Node.js
+      placeholder: "22.21.0"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: sistema-operativo
+    attributes:
+      label: Sistema Operativo
+      options:
+        - Windows
+        - Linux
+        - macOS
+    validations:
+      required: true
+
+  - type: dropdown
+    id: base-datos
+    attributes:
+      label: Base de Datos
+      options:
+        - PostgreSQL
+        - SQLite
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs relevantes
+      description: Copia aquí cualquier mensaje de error o log relevante
+      placeholder: Pega los logs aquí
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: contexto-adicional
+    attributes:
+      label: Contexto adicional
+      description: Agrega cualquier información adicional que pueda ayudar
+      placeholder: Capturas de pantalla, configuraciones especiales, etc.
+    validations:
+      required: false

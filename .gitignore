@@ -1,0 +1,40 @@
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db
+
+# Archivos temporales de Windows
+Thumbs.db
+Desktop.ini
+
+# Archivos de base de datos local
+*.sqlite
+*.sqlite-journal
+database.sqlite
+
+# Logs específicos del proyecto
+/storage/logs/*.log
+
+# Cache de npm
+.npm
+npm-debug.log*

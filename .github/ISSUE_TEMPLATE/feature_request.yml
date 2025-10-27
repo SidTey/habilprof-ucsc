@@ -1,0 +1,92 @@
+name: ✨ Solicitud de Funcionalidad
+description: Sugiere una nueva funcionalidad para el sistema HabilProf
+title: "[FEATURE]: "
+labels: ["enhancement", "necesita-revisión"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por tu sugerencia. Por favor describe la funcionalidad que te gustaría ver implementada.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción de la funcionalidad
+      description: Describe claramente la funcionalidad que propones
+      placeholder: Explica qué funcionalidad te gustaría agregar
+    validations:
+      required: true
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: Problema que resuelve
+      description: ¿Qué problema resuelve esta funcionalidad?
+      placeholder: Describe el problema o necesidad que motiva esta funcionalidad
+    validations:
+      required: true
+
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Solución propuesta
+      description: ¿Cómo imaginas que funcione?
+      placeholder: Describe cómo debería funcionar esta característica
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Alternativas consideradas
+      description: ¿Consideraste otras alternativas?
+      placeholder: Describe otras soluciones que hayas considerado
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área del sistema
+      description: ¿En qué parte del sistema iría esta funcionalidad?
+      options:
+        - Frontend (React)
+        - Backend (Laravel)
+        - Base de datos
+        - API
+        - Comandos Artisan
+        - Documentación
+        - Otro
+    validations:
+      required: true
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad sugerida
+      description: ¿Qué tan importante consideras esta funcionalidad?
+      options:
+        - Baja - Sería bueno tenerla
+        - Media - Mejoraría el sistema
+        - Alta - Es necesaria para el proyecto
+        - Crítica - Es esencial para el funcionamiento
+    validations:
+      required: true
+
+  - type: textarea
+    id: contexto-adicional
+    attributes:
+      label: Contexto adicional
+      description: Agrega cualquier información adicional
+      placeholder: Mockups, referencias, ejemplos de otros sistemas, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: disposicion
+    attributes:
+      label: Disposición para contribuir
+      description: ¿Estarías dispuesto a implementar esta funcionalidad?
+      options:
+        - label: Estoy dispuesto a implementar esta funcionalidad
+          required: false
