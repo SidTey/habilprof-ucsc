@@ -9,8 +9,13 @@ class Empresa extends Model
     protected $table = 'empresa';
     protected $fillable = ['rut_empresa','nombre_empresa'];
 
-    protected $casts = [
-        'rut_empresa' => 'integer',
-        'nombre_empresa'=> 'varchar',
-    ];
+
+    public static function validationRules()
+    {
+        return [
+            'rut_empresa' => 'required|integer|min:1000000|max:60000000|unique:alumnos,rut_alumno',
+            'nombre_empresa' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
+
+        ];
+    }
 }
