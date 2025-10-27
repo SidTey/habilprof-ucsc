@@ -50,6 +50,7 @@ El sistema implementa la funcionalidad completa R1 con todas sus especificacione
 
 ## 📚 Documentación
 
+- **[SETUP-COLABORADORES.md](SETUP-COLABORADORES.md)** - ⭐ **EMPIEZA AQUÍ** - Guía para nuevos colaboradores
 - **[INSTALLATION.md](INSTALLATION.md)** - Guía completa de instalación
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Cómo contribuir al proyecto
 - **[GITHUB_SETUP.md](GITHUB_SETUP.md)** - Subir proyecto a GitHub
@@ -60,11 +61,16 @@ El sistema implementa la funcionalidad completa R1 con todas sus especificacione
 
 ## 🚀 Instalación y Uso
 
-### Para Colaboradores (Primera Vez)
+### 👥 Para Nuevos Colaboradores
+
+**Si es tu primera vez configurando el proyecto, lee primero:**
+📖 **[SETUP-COLABORADORES.md](SETUP-COLABORADORES.md)** - Guía completa paso a paso
+
+**Resumen rápido:**
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/TU-USUARIO/habilprof-ucsc.git
+git clone https://github.com/SidTey/habilprof-ucsc.git
 cd habilprof-ucsc
 
 # 2. Instalar dependencias
@@ -76,16 +82,19 @@ cp .env.example .env
 php artisan key:generate
 
 # 4. Configurar base de datos en .env
-# Ver INSTALLATION.md para PostgreSQL o SQLite
+# Edita .env con tus credenciales
 
 # 5. Ejecutar migraciones
 php artisan migrate
 
-# 6. Iniciar sistema
+# 6. Verificar instalación
+php artisan test
+
+# 7. Iniciar sistema
 .\start-all.ps1  # Windows (abre Laravel + Vite)
 ```
 
-📖 **Guía completa**: [INSTALLATION.md](INSTALLATION.md)
+📖 **Documentación completa**: [INSTALLATION.md](INSTALLATION.md)
 
 ### Inicio Rápido (Desarrollo Diario)
 
