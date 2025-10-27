@@ -51,6 +51,7 @@ El sistema implementa la funcionalidad completa R1 con todas sus especificacione
 ## 📚 Documentación
 
 - **[SETUP-COLABORADORES.md](SETUP-COLABORADORES.md)** - ⭐ **EMPIEZA AQUÍ** - Guía para nuevos colaboradores
+- **[WORKFLOW.md](WORKFLOW.md)** - 🔄 **TRABAJO EN EQUIPO** - Flujo de trabajo con Git y versiones
 - **[INSTALLATION.md](INSTALLATION.md)** - Guía completa de instalación
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Cómo contribuir al proyecto
 - **[GITHUB_SETUP.md](GITHUB_SETUP.md)** - Subir proyecto a GitHub
