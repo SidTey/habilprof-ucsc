@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('nombre_alumno', 100)->index(); // R1.2: string máximo 100 caracteres con índice
             $table->string('correo_alumno', 255)->unique(); // R1.3: alfanuméricos [1,255] único
             $table->timestamps();
-            
+
             // Índice compuesto para consultas frecuentes
             $table->index(['rut_alumno', 'created_at']);
-            
+
             // Comentarios para documentar los requisitos
             $table->comment('Tabla de alumnos según requisitos R1.1, R1.2, R1.3');
         });
