@@ -1,5 +1,3 @@
-import React from 'react';
-
 function UcscDataTable({ registros, loading, onRefresh }) {
     return (
         <div>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 function UcscLogs({ logs, loading, onRefresh }) {
     const getStatusBadge = (estado) => {
         if (estado === 'exitoso') {

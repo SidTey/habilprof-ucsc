@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import './bootstrap';
 
-// Crear el punto de entrada de React
 const rootElement = document.getElementById('app');
 if (rootElement) {
     const root = createRoot(rootElement);

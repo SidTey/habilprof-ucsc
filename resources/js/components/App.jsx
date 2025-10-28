@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import UcscDataForm from './UcscDataForm';
 import UcscDataTable from './UcscDataTable';
 import UcscLogs from './UcscLogs';
