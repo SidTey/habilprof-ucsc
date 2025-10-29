@@ -52,18 +52,18 @@ function UcscDataTable({ registros, loading, onRefresh }) {
                                         {registro.id}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{registro.nombre_alumno}</div>
+                                        <div className="text-sm text-gray-900">{registro.nombre_alumno || 'Sin nombre'}</div>
                                         <div className="text-sm text-gray-500">
-                                            RUT: {registro.rut_alumno.toLocaleString()}
+                                            RUT: {registro.rut_alumno ? registro.rut_alumno.toLocaleString() : 'No disponible'}
                                         </div>
-                                        <div className="text-sm text-gray-500">{registro.correo_alumno}</div>
+                                        <div className="text-sm text-gray-500">{registro.correo_alumno || 'Sin correo'}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{registro.nombre_profesor}</div>
+                                        <div className="text-sm text-gray-900">{registro.nombre_profesor || 'Sin nombre'}</div>
                                         <div className="text-sm text-gray-500">
-                                            RUT: {registro.rut_profesor.toLocaleString()}
+                                            RUT: {registro.rut_profesor ? registro.rut_profesor.toLocaleString() : 'No disponible'}
                                         </div>
-                                        <div className="text-sm text-gray-500">{registro.correo_profesor}</div>
+                                        <div className="text-sm text-gray-500">{registro.correo_profesor || 'Sin correo'}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {registro.fecha_ingreso}

@@ -2,30 +2,38 @@ import { useState, useEffect } from 'react';
 import UcscDataForm from './UcscDataForm';
 import UcscDataTable from './UcscDataTable';
 import UcscLogs from './UcscLogs';
+import HabilitacionTable from './HabilitacionTable';
 import axios from 'axios';
 
 function App() {
     const [activeTab, setActiveTab] = useState('form');
     const [registros, setRegistros] = useState([]);
     const [logs, setLogs] = useState([]);
+    const [habilitaciones, setHabilitaciones] = useState([]);
     const [loading, setLoading] = useState(false);
 
     // Configurar axios con base URL
     useEffect(() => {
-        axios.defaults.baseURL = '/api';
+        const baseUrl = window.location.origin;
+        axios.defaults.baseURL = `${baseUrl}/api`;
         axios.defaults.headers.common['Accept'] = 'application/json';
         axios.defaults.headers.common['Content-Type'] = 'application/json';
+        axios.defaults.withCredentials = true;
     }, []);
 
     const cargarRegistros = async () => {
         try {
             setLoading(true);
+            console.log('Intentando cargar registros...');
             const response = await axios.get('/ucsc/registros');
+            console.log('Respuesta recibida:', response.data);
             if (response.data.success) {
                 setRegistros(response.data.data);
+                console.log('Registros actualizados:', response.data.data);
             }
         } catch (error) {
             console.error('Error cargando registros:', error);
+            console.error('Detalles del error:', error.response?.data);
         } finally {
             setLoading(false);
         }
@@ -45,11 +53,27 @@ function App() {
         }
     };
 
+    const cargarHabilitaciones = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get('/habilitaciones');
+            if (response.data.success) {
+                setHabilitaciones(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error cargando habilitaciones:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (activeTab === 'registros') {
             cargarRegistros();
         } else if (activeTab === 'logs') {
             cargarLogs();
+        } else if (activeTab === 'habilitaciones') {
+            cargarHabilitaciones();
         }
     }, [activeTab]);
 
@@ -107,6 +131,16 @@ function App() {
                         >
                             Logs del Sistema (R1.13)
                         </button>
+                        <button
+                            onClick={() => handleTabChange('habilitaciones')}
+                            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                                activeTab === 'habilitaciones'
+                                    ? 'border-blue-500 text-blue-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                            }`}
+                        >
+                            Habilitaciones (R2)
+                        </button>
                     </nav>
                 </div>
 
@@ -127,6 +161,13 @@ function App() {
                             logs={logs} 
                             loading={loading}
                             onRefresh={cargarLogs}
+                        />
+                    )}
+                    {activeTab === 'habilitaciones' && (
+                        <HabilitacionTable 
+                            habilitaciones={habilitaciones}
+                            loading={loading}
+                            onRefresh={cargarHabilitaciones}
                         />
                     )}
                 </div>
