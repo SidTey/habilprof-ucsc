@@ -12,6 +12,7 @@ use App\Models\Empresa;
 use App\Models\Supervisor;
 use App\Models\Asigna;
 use App\Models\Pring;
+use App\Models\Prinv;
 use App\Models\Prniv;
 
 class HabilitacionProfesionalController extends Controller
@@ -34,7 +35,7 @@ class HabilitacionProfesionalController extends Controller
     public function getProfesoresDisponibles(Request $request)
     {
         $idHabilitacion = $request->input('id_habilitacion');
-        
+
         // Excluir profesores ya asignados a esta habilitación
         $profesoresAsignados = Asigna::where('id_habilitacion', $idHabilitacion)
             ->pluck('rut_profesor');
@@ -137,7 +138,7 @@ class HabilitacionProfesionalController extends Controller
                 'titulo_proy' => $request->titulo_proyecto
             ]);
         } else {
-            Prniv::create([
+            Prinv::create([
                 'id_habilitacion' => $habilitacion->id_habilitacion,
                 'titulo_proy' => $request->titulo_proyecto
             ]);
@@ -146,7 +147,7 @@ class HabilitacionProfesionalController extends Controller
         // Asignar profesores
         $this->asignarProfesor($habilitacion->id_habilitacion, $request->rut_profesor_guia, 'Profesor_Guia');
         $this->asignarProfesor($habilitacion->id_habilitacion, $request->rut_profesor_comision, 'Profesor_Comision');
-        
+
         if ($request->has('rut_profesor_co_guia')) {
             $this->asignarProfesor($habilitacion->id_habilitacion, $request->rut_profesor_co_guia, 'Profesor_Co_Guia');
         }

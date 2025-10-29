@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Profesor;
+
 return [
 
     /*
@@ -14,8 +16,11 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+
+        'guard' => 'profesor',
+
+        'passwords' => 'profesores',
+
     ],
 
     /*
@@ -39,7 +44,12 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ],
+            ],
+            'profesor'=> [
+                'driver'=> 'session',
+                'provider'=> 'profesores',
+            ]
+
     ],
 
     /*
@@ -65,10 +75,16 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
+        'profesores' => [
+            'driver' => 'eloquent',
+            'model'=>  App\Models\Profesor::class,
+
+
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
-        // ],
+
     ],
 
     /*
@@ -97,6 +113,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        'profesores'=> [
+            'provider'=> 'profesores',
+            'table'=> env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire'=> 60,
+            'throttle'=> 60,
+        ],
     ],
 
     /*
@@ -111,5 +134,5 @@ return [
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
-
+    ],
 ];

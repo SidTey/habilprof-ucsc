@@ -9,9 +9,10 @@ class HabilitacionProfesional extends Model
     protected $table = 'habilitacion_profesional';
     protected $primaryKey = 'id_habilitacion';
     public $incrementing = false;
-    protected $keyType = 'string';
+    protected $keyType = 'varchar';
 
     protected $fillable = [
+        'id_habilitacion',
         'rut_alumno',
         'año_semestre',
         'numero_semestre',

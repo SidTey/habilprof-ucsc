@@ -4,18 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pring extends Model
+class Prtut extends Model
 {
-    protected $table = 'pring';
+    protected $table = 'prtut';
     protected $primaryKey = 'id_habilitacion';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    public $timestamps = false;
+    public $incrementing = true;
+    protected $keyType = 'varchar';
 
     protected $fillable = [
         'id_habilitacion',
-        'titulo_proy',
+        'rut_empresa',
+        'rut_supervisor',
     ];
 
 

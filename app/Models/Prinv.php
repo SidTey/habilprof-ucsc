@@ -6,23 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prinv extends Model
 {
-    protected $table = 'practica_nivelacion';
-    protected $primaryKey = 'id_practica_nivelacion';
+    protected $table = 'prinv';
+    protected $primaryKey = 'id_habilitacion';
     public $incrementing = true;
-    protected $keyType = 'int';
+    protected $keyType = 'varchar';
 
     protected $fillable = [
         'id_habilitacion',
-        'fecha_inicio',
-        'fecha_termino',
-        'nota',
-        'observaciones'
-    ];
-
-    protected $casts = [
-        'fecha_inicio' => 'date',
-        'fecha_termino' => 'date',
-        'nota' => 'decimal:2'
+        'titulo_proy',
     ];
 
     // Relación inversa con HabilitacionProfesional

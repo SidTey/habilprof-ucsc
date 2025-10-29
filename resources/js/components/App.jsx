@@ -4,8 +4,13 @@ import UcscDataTable from './UcscDataTable';
 import UcscLogs from './UcscLogs';
 import HabilitacionTable from './HabilitacionTable';
 import axios from 'axios';
+import Login from './Login';
+
 
 function App() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(null); // null = 'verificando...', false = 'no logueado', true = 'logueado'
+    const [profesor, setProfesor] = useState(null); // Almacena los datos del profesor logueado
     const [activeTab, setActiveTab] = useState('form');
     const [registros, setRegistros] = useState([]);
     const [logs, setLogs] = useState([]);
@@ -14,11 +19,16 @@ function App() {
 
     // Configurar axios con base URL
     useEffect(() => {
-        const baseUrl = window.location.origin;
-        axios.defaults.baseURL = `${baseUrl}/api`;
-        axios.defaults.headers.common['Accept'] = 'application/json';
-        axios.defaults.headers.common['Content-Type'] = 'application/json';
-        axios.defaults.withCredentials = true;
+        axios.get('/user')
+            .then(response => {
+                // Si la petición tiene éxito, significa que ya estamos logueados
+                setProfesor(response.data);
+                setIsLoggedIn(true);
+            })
+            .catch(error => {
+                // Si da un error (como 401), no estamos logueados
+                setIsLoggedIn(false);
+            });
     }, []);
 
     const cargarRegistros = async () => {
@@ -68,14 +78,16 @@ function App() {
     };
 
     useEffect(() => {
-        if (activeTab === 'registros') {
-            cargarRegistros();
-        } else if (activeTab === 'logs') {
-            cargarLogs();
-        } else if (activeTab === 'habilitaciones') {
-            cargarHabilitaciones();
+        if (isLoggedIn) { // <-- Solo carga datos si estamos logueados
+             if (activeTab === 'registros') {
+                 cargarRegistros();
+            } else if (activeTab === 'logs') {
+                cargarLogs();
+            } else if (activeTab === 'habilitaciones') {
+                cargarHabilitaciones();
+            }
         }
-    }, [activeTab]);
+    }, [activeTab, isLoggedIn]);
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -88,6 +100,33 @@ function App() {
         }
     };
 
+    const handleLoginSuccess = (profesorLogueado) => {
+        setProfesor(profesorLogueado); // Guarda los datos del profesor
+        setIsLoggedIn(true); // Marca la app como "logueada"
+    };
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/logout'); // Llama a la ruta /api/logout
+            setIsLoggedIn(false); // Marca la app como "no logueada"
+            setProfesor(null); // Borra los datos del profesor
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
+    };
+
+    if (isLoggedIn === null) {
+        return (
+            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                <h1 className="text-2xl font-bold">Cargando Sistema HabilProf...</h1>
+            </div>
+        );
+    }
+
+    if (isLoggedIn === false) {
+        return <Login onLoginSuccess={handleLoginSuccess} />;
+    }
+
     return (
         <div className="min-h-screen bg-gray-100">
             <header className="bg-blue-600 text-white p-4">
@@ -95,6 +134,17 @@ function App() {
                     <h1 className="text-2xl font-bold">Sistema HabilProf - UCSC</h1>
                     <p className="text-blue-200">Carga automática de datos desde sistemas UCSC</p>
                 </div>
+
+                <div>
+                        {/* Mostramos el nombre del profesor logueado */}
+                        <span className="mr-4">Hola, {profesor.nombre_profesor}</span>
+                        <button
+                            onClick={handleLogout}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        >
+                            Cerrar Sesión
+                        </button>
+                    </div>
             </header>
 
             <main className="container mx-auto py-6 px-4">
@@ -150,21 +200,21 @@ function App() {
                         <UcscDataForm onDataSubmitted={handleDataSubmitted} />
                     )}
                     {activeTab === 'registros' && (
-                        <UcscDataTable 
-                            registros={registros} 
+                        <UcscDataTable
+                            registros={registros}
                             loading={loading}
                             onRefresh={cargarRegistros}
                         />
                     )}
                     {activeTab === 'logs' && (
-                        <UcscLogs 
-                            logs={logs} 
+                        <UcscLogs
+                            logs={logs}
                             loading={loading}
                             onRefresh={cargarLogs}
                         />
                     )}
                     {activeTab === 'habilitaciones' && (
-                        <HabilitacionTable 
+                        <HabilitacionTable
                             habilitaciones={habilitaciones}
                             loading={loading}
                             onRefresh={cargarHabilitaciones}
