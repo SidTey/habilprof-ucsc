@@ -14,8 +14,8 @@ export default defineConfig({
         jsxInject: `import React from 'react'`,
     },
     server: {
-        host: '127.0.0.1',
-        port: 3000,
+        host: true, // Escucha en todas las interfaces de red
+        port: 5173,
         strictPort: true,
         hmr: {
             host: 'localhost',
