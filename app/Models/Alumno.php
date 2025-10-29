@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Alumno extends Model
 {
+    protected $table = 'alumno';
+    protected $primaryKey = 'rut_alumno';
+    public $timestamps = false;
+    
     protected $fillable = [
         'rut_alumno',
         'nombre_alumno', 
