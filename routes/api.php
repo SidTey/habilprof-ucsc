@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UcscDataController;
+use App\Http\Controllers\HabilitacionProfesionalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,12 @@ Route::prefix('ucsc')->group(function () {
     
     // Obtener logs del sistema (R1.13)
     Route::get('/logs', [UcscDataController::class, 'obtenerLogs']);
+});
+
+// Rutas para funcionalidad R2: Ingreso de datos de la Habilitación Profesional
+Route::prefix('habilitaciones')->group(function () {
+    Route::get('/', [HabilitacionProfesionalController::class, 'index']);
+    Route::post('/', [HabilitacionProfesionalController::class, 'store']);
+    Route::get('/alumnos-disponibles', [HabilitacionProfesionalController::class, 'getAlumnosDisponibles']);
+    Route::get('/profesores-disponibles', [HabilitacionProfesionalController::class, 'getProfesoresDisponibles']);
 });
