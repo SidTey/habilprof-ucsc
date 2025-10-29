@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class RegistroUcsc extends Model
 {
     protected $table = 'registros_ucsc';
-    
+
     protected $fillable = [
         'alumno_id',
         'profesor_id',
@@ -49,4 +49,5 @@ class RegistroUcsc extends Model
     {
         return $this->belongsTo(Profesor::class);
     }
+
 }

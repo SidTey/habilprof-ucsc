@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UcscDataController;
+use App\Http\Controllers\HabilitacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('ucsc')->group(function () {
     // R1: Procesar carga automática de datos
     Route::post('/carga-automatica', [UcscDataController::class, 'procesarCargaAutomatica']);
-    
+
     // Obtener registros UCSC
     Route::get('/registros', [UcscDataController::class, 'obtenerRegistros']);
-    
+
     // Obtener logs del sistema (R1.13)
     Route::get('/logs', [UcscDataController::class, 'obtenerLogs']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/habilitaciones', [HabilitacionController::class, 'store']);
 });
