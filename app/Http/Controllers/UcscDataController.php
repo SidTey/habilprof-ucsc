@@ -163,21 +163,26 @@ class UcscDataController extends Controller
      */
     public function obtenerRegistros()
     {
+        \Log::info('Iniciando obtenerRegistros');
+        
         $registros = RegistroUcsc::with(['alumno', 'profesor'])
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($registro) {
+            ->get();
+            
+        \Log::info('Registros encontrados: ' . $registros->count());
+        
+        $registros = $registros->map(function ($registro) {
                 return [
                     'id' => $registro->id,
-                    'rut_alumno' => $registro->alumno->rut_alumno,
-                    'nombre_alumno' => $registro->alumno->nombre_alumno,
-                    'correo_alumno' => $registro->alumno->correo_alumno,
-                    'rut_profesor' => $registro->profesor->rut_profesor,
-                    'nombre_profesor' => $registro->profesor->nombre_profesor,
-                    'correo_profesor' => $registro->profesor->correo_profesor,
-                    'fecha_ingreso' => $registro->fecha_ingreso->format('d/m/Y'),
+                    'rut_alumno' => $registro->alumno ? $registro->alumno->rut_alumno : null,
+                    'nombre_alumno' => $registro->alumno ? $registro->alumno->nombre_alumno : 'Sin nombre',
+                    'correo_alumno' => $registro->alumno ? $registro->alumno->correo_alumno : null,
+                    'rut_profesor' => $registro->profesor ? $registro->profesor->rut_profesor : null,
+                    'nombre_profesor' => $registro->profesor ? $registro->profesor->nombre_profesor : 'Sin nombre',
+                    'correo_profesor' => $registro->profesor ? $registro->profesor->correo_profesor : null,
+                    'fecha_ingreso' => $registro->fecha_ingreso ? $registro->fecha_ingreso->format('d/m/Y') : null,
                     'nota_final' => $registro->nota_final,
-                    'created_at' => $registro->created_at->format('d/m/Y H:i:s')
+                    'created_at' => $registro->created_at ? $registro->created_at->format('d/m/Y H:i:s') : null
                 ];
             });
 
