@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Profesor;
+use App\Models\AutentificacionDeUsuarios;
 
 return [
 
@@ -77,7 +77,7 @@ return [
 
         'profesores' => [
             'driver' => 'eloquent',
-            'model'=>  App\Models\Profesor::class,
+            'model'=>  App\Models\AutentificacionDeUsuarios::class,
 
 
 

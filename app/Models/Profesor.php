@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\AutentificacionDeUsuarios;
+use App\Models\RegistroUcsc;
 
-class Profesor extends Authenticatable
+class Profesor extends Model
 {
-    use Notifiable;
+
     protected $table = 'profesor';
     protected $primaryKey = 'rut_profesor';
     public $timestamps = false;
@@ -17,13 +18,7 @@ class Profesor extends Authenticatable
     protected $fillable = [
         'rut_profesor',
         'nombre_profesor',
-        'correo_profesor',
-        'password',
-    ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
     ];
     /**
      * Reglas de validación según requisitos R1.4, R1.5, R1.7
@@ -38,15 +33,21 @@ class Profesor extends Authenticatable
         return [
             'rut_profesor' => 'required|integer|min:10000000|max:60000000|unique:profesor,rut_profesor',
             'nombre_profesor' => 'required|string|max:100|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
-            'correo_profesor' => 'required|string|max:255|email'
+
         ];
     }
 
     /**
      * Relación con registros UCSC
      */
+
+    public function autenticacion()
+    {
+        return $this->hasOne(AutentificacionDeUsuarios::class, 'rut_profesor', 'rut_profesor');
+    }
     public function registrosUcsc()
     {
-        return $this->hasMany(RegistroUcsc::class);
+        // hasMany(Modelo, 'llave_foránea_en_registros_ucsc', 'llave_local_en_profesor')
+        return $this->hasMany(RegistroUcsc::class, 'profesor_id', 'rut_profesor');
     }
 }

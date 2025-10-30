@@ -13,7 +13,7 @@ const styles = {
     success: { color: 'green', marginTop: '10px', border: '1px solid green', padding: '10px' }
 };
 
-export default function Login({ onLoginSuccess }) {
+export default function Login({ onLoginSuccess, onShowRegister }) {
     // Estados para los campos del formulario
     const [rut, setRut] = useState('');
     const [password, setPassword] = useState('');
@@ -127,6 +127,19 @@ export default function Login({ onLoginSuccess }) {
                    style={{ marginTop: '15px', display: 'block', textAlign: 'center' }}
                 >
                     Olvidé mi contraseña
+                </a>
+
+                <a
+                onClick={onShowRegister}
+                style={{
+                    marginTop: '10px',
+                    display: 'block',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    color: '#28a745' // Color verde
+                    }}
+                >
+                    ¿No tienes cuenta? Regístrate
                 </a>
             </form>
         </div>

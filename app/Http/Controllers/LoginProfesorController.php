@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Profesor;
-use Illuminate\Support\Facades\RateLimiter; // Para R5.6
+
+use App\Models\AutentificacionDeUsuarios;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class LoginProfesorController extends Controller
@@ -32,31 +33,43 @@ class LoginProfesorController extends Controller
         }
 
         // 3. Validar el formato de los campos (R5.3, R1.4, R5.1)
+        // (La validación de 'rut_profesor' es correcta, de 7 a 9 dígitos)
         $validator = Validator::make($request->all(), [
-            'rut_profesor' => 'required|integer|min:10000000|max:600000000', // R1.4
-            'password' => 'required|string|min:8|max:30', // R5.1
+            'rut_profesor' => 'required|integer|min:1000000|max:999999999',
+            'password' => 'required|string|min:8|max:30',
         ], [
-            // R5.3: Mensaje de formato RUT
             'rut_profesor.min' => 'El formato del RUT no es válido.',
             'rut_profesor.max' => 'El formato del RUT no es válido.',
-            'rut_profesor.required' => 'El rut ingresado es incorrecto.', // R5.2.1 (parcial)
-            'password.required' => 'La contraseña ingresada es incorrecta.', // R5.2.2 (parcial)
+            'rut_profesor.required' => 'El rut ingresado es incorrecto.',
+            'password.required' => 'La contraseña ingresada es incorrecta.',
         ]);
 
         if ($validator->fails()) {
-            RateLimiter::hit($throttleKey, 15 * 60); // Bloqueo de 15 minutos
+            RateLimiter::hit($throttleKey, 15 * 60);
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
         // 4. Validar existencia del RUT (R5.2.1)
-        $profesor = Profesor::where('rut_profesor', $request->rut_profesor)->first();
-        if (!$profesor) {
+        // ¡CAMBIO CLAVE! Buscamos en la tabla de autenticación, no en 'profesor'
+        // Usamos find() porque 'rut_profesor' es la Primary Key.
+        $authData = AutentificacionDeUsuarios::find($request->rut_profesor);
+
+        if (!$authData) {
             RateLimiter::hit($throttleKey, 15 * 60);
             return response()->json(['message' => 'El rut ingresado es incorrecto.'], 422);
         }
 
         // 5. Intentar autenticación (R5.4)
-        if (!Auth::guard('profesor')->attempt($request->only('rut_profesor', 'password'), $request->boolean('remember'))) {
+
+        // Laravel usará el 'password' del formulario y lo comparará con
+        // la columna 'contraseña' de la BD, gracias a la función
+        // getAuthPasswordName() que definimos en el modelo.
+        $credentials = [
+            'rut_profesor' => $request->rut_profesor,
+            'password' => $request->password
+        ];
+
+        if (!Auth::guard('profesor')->attempt($credentials, $request->boolean('remember'))) {
             RateLimiter::hit($throttleKey, 15 * 60);
             return response()->json(['message' => 'La contraseña ingresada es incorrecta.'], 422); // R5.2.2
         }
@@ -65,10 +78,16 @@ class LoginProfesorController extends Controller
         RateLimiter::clear($throttleKey);
         $request->session()->regenerate(); // R5.5.1: Crear sesión
 
-        // Devolvemos el profesor y el mensaje de éxito
+
+        // Obtenemos el usuario logueado (que es un modelo 'AutentificacionDeUsuarios')
+        $authUser = Auth::guard('profesor')->user();
+        // Usamos la relación 'profesor()' que definimos para obtener los datos del profesor (nombre, etc.)
+        $profesor = $authUser->profesor;
+
+        // Devolvemos el profesor (con el nombre) y el mensaje de éxito
         return response()->json([
             'message' => 'Inicio de sesión exitoso', // R5.5.3
-            'profesor' => Auth::guard('profesor')->user()
+            'profesor' => $profesor // <-- Ahora enviamos el objeto Profesor, no el de Auth
         ], 200);
     }
 
@@ -86,10 +105,15 @@ class LoginProfesorController extends Controller
     }
 
     /**
-     * Devuelve el usuario autenticado (opcional, pero útil)
+     * Devuelve el usuario autenticado (para React)
      */
     public function user(Request $request)
     {
-        return $request->user('profesor');
+
+        // Obtenemos el modelo de Autenticación
+        $authData = $request->user('profesor');
+
+        // Devolvemos el modelo de Profesor asociado (que tiene el nombre)
+        return $authData ? $authData->profesor : null;
     }
 }

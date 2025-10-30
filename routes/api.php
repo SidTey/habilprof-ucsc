@@ -2,40 +2,45 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UcscDataController;
-use App\Http\Controllers\HabilitacionProfesionalController;
+use App\Http\Controllers\LoginProfesorController;
+use App\Http\Controllers\RegisterProfesorController;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Rutas API
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| Aquí vamos a añadir manualmente el middleware de "sesión"
+| para que tu LoginProfesorController (que usa sesiones) funcione.
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// --- ¡LA SOLUCIÓN! ---
+// Añadimos el middleware de sesión ('web') a todas nuestras rutas.
+// Esto soluciona el Error 500.
+Route::middleware([
+    // Esto es (básicamente) el grupo 'web', pero sin el CSRF (que da el Error 419)
+    \Illuminate\Cookie\Middleware\EncryptCookies::class,
+    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+])->group(function () {
 
-// Rutas para funcionalidad R1: Carga automática de datos desde sistemas UCSC
-Route::prefix('ucsc')->group(function () {
-    // R1: Procesar carga automática de datos
-    Route::post('/carga-automatica', [UcscDataController::class, 'procesarCargaAutomatica']);
-    
-    // Obtener registros UCSC
-    Route::get('/registros', [UcscDataController::class, 'obtenerRegistros']);
-    
-    // Obtener logs del sistema (R1.13)
-    Route::get('/logs', [UcscDataController::class, 'obtenerLogs']);
-});
+    // --- RUTAS DE AUTENTICACIÓN ---
 
-// Rutas para funcionalidad R2: Ingreso de datos de la Habilitación Profesional
-Route::prefix('habilitaciones')->group(function () {
-    Route::get('/', [HabilitacionProfesionalController::class, 'index']);
-    Route::post('/', [HabilitacionProfesionalController::class, 'store']);
-    Route::get('/alumnos-disponibles', [HabilitacionProfesionalController::class, 'getAlumnosDisponibles']);
-    Route::get('/profesores-disponibles', [HabilitacionProfesionalController::class, 'getProfesoresDisponibles']);
+    // Ruta de Login: /api/login
+    Route::post('/login', [LoginProfesorController::class, 'store'])->name('login');
+
+    // Ruta de Registro: /api/register
+    Route::post('/register', [RegisterProfesorController::class, 'store'])->name('register');
+
+    // Rutas que requieren estar logueado (auth:profesor)
+    Route::middleware('auth:profesor')->group(function () {
+        // Ruta de Logout: /api/logout
+        Route::post('/logout', [LoginProfesorController::class, 'destroy'])->name('logout');
+
+        // Ruta para verificar quién está logueado: /api/user
+        Route::get('/user', [LoginProfesorController::class, 'user'])->name('user');
+    });
+
 });

@@ -5,12 +5,15 @@ import UcscLogs from './UcscLogs';
 import HabilitacionTable from './HabilitacionTable';
 import axios from 'axios';
 import Login from './Login';
+import Register from './Register';
 
 
 function App() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(null); // null = 'verificando...', false = 'no logueado', true = 'logueado'
     const [profesor, setProfesor] = useState(null); // Almacena los datos del profesor logueado
+    const [showRegister, setShowRegister] = useState(false);
+
     const [activeTab, setActiveTab] = useState('form');
     const [registros, setRegistros] = useState([]);
     const [logs, setLogs] = useState([]);
@@ -124,7 +127,16 @@ function App() {
     }
 
     if (isLoggedIn === false) {
-        return <Login onLoginSuccess={handleLoginSuccess} />;
+        if (showRegister) {
+            // Muestra el formulario de Registro
+            return <Register onShowLogin={() => setShowRegister(false)} />;
+        } else {
+            // Muestra el formulario de Login
+            return <Login
+                onLoginSuccess={handleLoginSuccess}
+                onShowRegister={() => setShowRegister(true)} // <-- Pasa la nueva prop
+            />;
+        }
     }
 
     return (
